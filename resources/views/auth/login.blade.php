@@ -62,7 +62,7 @@
                         </a>
                     @endif
                     <div class="container d-grid gap-2 col-6 mx-auto">
-                        <button class="btn btn-light px-5" id="submit" type="submit">Iniciar Sesión</button>
+                        <button class="btn btn-light" id="submit" type="submit">Iniciar Sesión</button>
                     </div>
                 </form>
                 <p>¿Aún no tienes una cuenta? <a href="{{ route('register') }}" class="btn btn-link">Regístrate Aquí</a>
