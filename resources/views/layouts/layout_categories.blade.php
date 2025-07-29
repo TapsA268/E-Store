@@ -250,6 +250,8 @@
     <!-- Script de buscador y más -->
     <script src="{{ asset('assets/Script.js') }}"></script>
     <script src="{{ asset('/register-sw.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('products.partials.msg')
 </body>
 
 </html>

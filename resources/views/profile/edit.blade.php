@@ -5,7 +5,7 @@
 <div class="container justify-content-center">
     <h4 class="display-5 text-center">Editar información del perfil</h4>
     <hr class="my-4">
-    @if (!auth()->user()->two_factor_secret) 
+    {{-- @if (!auth()->user()->two_factor_secret) 
         No tienes activa la verificación por dos pasos.
         <form action="{{url('user/two-factor-authentication')}}" method="post">
             @csrf
@@ -34,7 +34,7 @@
         @foreach (json_decode(decrypt(auth()->user()->two_factor_recovery_codes)) as $code )
             <li>{{$code}}</li>
         @endforeach
-    @endif
+    @endif --}}
 
     <div class="row mb-3">
         <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Usuario actual') }}</label>

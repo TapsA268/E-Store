@@ -23,8 +23,7 @@
                                 <form action="{{ route('add') }}" method="post">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $row->id }}"></input>
-                                    <button type="submit" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                        data-bs-target="#Modal">Agregar al carrito</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Agregar al carrito</button>
                                 </form>
                             </div>
                         </div>

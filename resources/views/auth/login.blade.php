@@ -19,10 +19,16 @@
 </head>
 
 <body
-    style="background-image: url(/images/Background.svg);
-    height: 500px;
-    background-repeat: no-repeat;
-    background-size: cover;">
+    style="
+background-image: url(/images/Background.svg);
+height: 100vh;
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+display: flex;
+align-items: center;
+justify-content: center;
+">
     <div class="container col-xl-10 col-xxl-8 px-4 py-5">
         <div class="row align-items-center g-lg-5 py-5">
             <div class="col-lg-7 text-center text-lg-start">
@@ -48,7 +54,7 @@
                 <form id="login-form" action="{{ route('login') }}" method="post" class="p-3 p-md-4">
                     @csrf
                     <!-- Token de seguridad -->
-                    <label for="inputUser" class="form-label">Usuario</label>
+                    <label for="inputUser" class="form-label">Correo Electrónico</label>
                     <input type="text" name="email" id="inputUser" class="form-control">
                     <label for="inputPassword" class="form-label">Contraseña</label>
                     <input type="password" name="password" id="inputPassword" class="form-control"

@@ -19,10 +19,16 @@
 </head>
 
 <body
-    style="background-image: url(/images/Background.svg);
-    height: 500px;
-    background-repeat: no-repeat;
-    background-size: cover;">
+    style="
+background-image: url(/images/Background.svg);
+height: 100vh;
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center;
+display: flex;
+align-items: center;
+justify-content: center;
+">
     <div class="container col-xl-10 col-xxl-8 px-4 py-5">
         <div class="row align-items-center g-lg-5 py-5">
             <div class="col-lg-7 text-center text-lg-start">
@@ -62,8 +68,8 @@
                     </div>
 
                     <div class="container d-grid gap-2 col-6 mx-auto mt-3">
-                      <button class="btn btn-light px-5" id="submit" type="submit">Registrarme</button>
-                  </div>
+                        <button class="btn btn-light px-5" id="submit" type="submit">Registrarme</button>
+                    </div>
                 </form>
             </div>
         </div>
