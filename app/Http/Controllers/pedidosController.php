@@ -2,46 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\pedido_producto;
 use Illuminate\Http\Request;
 use App\Models\pedidos;
 use App\Models\productos;
-use App\Models\direccion;
 use Cart;
+use Illuminate\Support\Facades\DB;
 
 class pedidosController extends Controller
 {
-    public function procesarPedido(Request $request)
+    public function store(Request $request)
     {
-        // Validar los datos del formulario aquí si es necesario
+        DB::beginTransaction();
 
-        // Crear un nuevo pedido
-        $pedido = new pedidos();
-        $pedido->user_id = auth()->id(); // Suponiendo que tienes un sistema de autenticación
-        $pedido->save();
+        try {
+            $subtotal = Cart::subtotal();
+            $tax = $subtotal * 0.15;
+            $descuento = session('descuento') ?? 0;
+            $descuento_valor = $subtotal * $descuento;
+            $total = $subtotal + $tax - $descuento_valor;
 
-        // Recorrer los elementos del carrito utilizando la librería Cart
-        foreach (Cart::getContent() as $item) {
-            // Buscar el producto en la base de datos
-            $producto = productos::findOrFail($item->id);
-
-            // Crear la relación en la tabla intermedia producto_pedido
-            $pedido->productos()->attach($producto, [
-                'cantidad' => $item->quantity,
-                'precio' => $producto->precio // Suponiendo que el precio está en el modelo Producto
+            // Crear el pedido
+            $pedido = pedidos::create([
+                'user_id' => auth()->id(),
             ]);
+
+            // Guardar los productos del pedido
+            foreach (Cart::content() as $item) {
+                pedido_producto::create([
+                    'pedido_id' => $pedido->id,
+                    'producto_id' => $item->id,
+                    'cantidad' => $item->qty,
+                ]);
+
+                // Disminuir el stock del producto
+                $producto = productos::find($item->id);
+                if ($producto) {
+                    $producto->stock -= $item->qty;
+                    $producto->save();
+                }
+            }
+
+            Cart::destroy(); // Vaciar el carrito
+            DB::commit();
+
+            return redirect()->route('cart.checkout', $pedido->id)->with('success', 'Pedido registrado correctamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error al registrar el pedido: ' . $e->getMessage());
         }
-
-        // Asociar la dirección al pedido
-        $pedido->direccion()->associate($direcciones);
-        $pedido->save();
-
-        // Limpiar el carrito después de procesar el pedido si es necesario
-        Cart::clear();
-
-        // Realizar cualquier otra lógica que necesites aquí
-
-        // Redirigir o devolver una respuesta
-        return redirect()->route('home');
     }
-    
 }

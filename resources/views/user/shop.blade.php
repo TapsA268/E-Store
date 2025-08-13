@@ -62,97 +62,17 @@
             </div>
             <div class="col-md-7 col-lg-8">
                 <h4 class="mb-3">Formulario de compra</h4>
-                <form class="needs-validation" novalidate>
-                    {{-- action="{{route('procesar')}}" method="POST">
-          @csrf --}}
-                    <div class="row g-3">
-                        <div class="col-sm-6">
-                            <label for="firstName" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="" value=""
-                                required>
-                            <div class="invalid-feedback">
-                                Valid first name is required.
-                            </div>
-                        </div>
+                <hr class="my-4">
+                <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID') }}&currency=MXN"></script>
+                <div id="paypal-button-container"></div>
+                <div class="my-3"></div>
 
-                        <div class="col-sm-6">
-                            <label for="lastName" class="form-label">Apellido</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="" value=""
-                                required>
-                            <div class="invalid-feedback">
-                                Valid last name is required.
-                            </div>
-                        </div>
+                <div class="row gy-3"></div>
+                <hr class="my-4">
 
-                        <div class="col-12">
-                            <label for="address" class="form-label">Calle</label>
-                            <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                            <div class="invalid-feedback">
-                                Please enter your shipping address.
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="state" class="form-label">Ciudad</label>
-                            <select class="form-select" id="state" required>
-                                <option value="">Choose...</option>
-                                <option value="1">Aguascalientes</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please provide a valid state.
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="country" class="form-label">Estado</label>
-                            <select class="form-select" id="country" required>
-                                <option value="">Choose...</option>
-                                <option value="1">Aguascalientes</option>
-                                <option value="2">Puebla</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please select a valid country.
-                            </div>
-                        </div>
-
-
-
-                        <div class="col-md-3">
-                            <label for="state" class="form-label">País</label>
-                            <select class="form-select" id="state" required>
-                                <option value="">Choose...</option>
-                                <option value="1">México</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please provide a valid state.
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="zip" class="form-label">Código Postal</label>
-                            <input type="text" class="form-control" id="zip" placeholder="" required>
-                            <div class="invalid-feedback">
-                                Zip code required.
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-4">
-
-                    <h4 class="mb-3">Métodos de pago</h4>
-                    <script
-                        src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID') }}&currency=MXN">
-                    </script>
-                    <div id="paypal-button-container"></div>
-                    <div class="my-3">
-
-                    </div>
-
-                    <div class="row gy-3">
-
-                    </div>
-
-                    <hr class="my-4">
-                    {{-- <button class="w-100 btn btn-primary btn-lg" type="submit">Comprar</button> --}}
+                <form action="{{ route('pedidos.store') }}" method="POST">
+                    @csrf
+                    <button class="btn btn-primary rounded-pill" type="submit">Confirmar pedido</button>
                 </form>
 
                 <script>
@@ -162,12 +82,47 @@
                             shape: 'pill',
                             label: 'pay'
                         },
+                        @php
+                            $subtotal = Cart::subtotal(); // sin impuestos
+                            $descuento = session('descuento') ?? 0;
+                            $descuento_valor = $subtotal * $descuento;
+                            $impuesto_valor = $subtotal * 0.15;
+                            $total_final = $subtotal + $impuesto_valor - $descuento_valor;
+                        @endphp
+
                         createOrder: function(data, actions) {
                             return actions.order.create({
                                 purchase_units: [{
                                     amount: {
-                                        value: "{{ number_format(Cart::total() - Cart::total() * session('descuento'), 2, '.') }}"
-                                    }
+                                        currency_code: "MXN",
+                                        value: "{{ number_format($total_final, 2, '.', '') }}",
+                                        breakdown: {
+                                            item_total: {
+                                                currency_code: "MXN",
+                                                value: "{{ number_format($subtotal, 2, '.', '') }}"
+                                            },
+                                            tax_total: {
+                                                currency_code: "MXN",
+                                                value: "{{ number_format($impuesto_valor, 2, '.', '') }}"
+                                            },
+                                            discount: {
+                                                currency_code: "MXN",
+                                                value: "{{ number_format($descuento_valor, 2, '.', '') }}"
+                                            }
+                                        }
+                                    },
+                                    items: [
+                                        @foreach (Cart::content() as $item)
+                                            {
+                                                name: "{{ $item->name ?? 'Producto' }}",
+                                                unit_amount: {
+                                                    currency_code: "MXN",
+                                                    value: "{{ number_format($item->price, 2, '.', '') }}"
+                                                },
+                                                quantity: "{{ $item->qty }}"
+                                            },
+                                        @endforeach
+                                    ]
                                 }]
                             });
                         },

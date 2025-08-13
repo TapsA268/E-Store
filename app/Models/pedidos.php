@@ -9,13 +9,8 @@ class pedidos extends Model
 {
     protected $fillable = ['user_id'];
 
-    public function productos()
+    public function usuario()
     {
-        return $this->belongsToMany(productos::class)->withPivot('cantidad');
-    }
-
-    public function direccion()
-    {
-        return $this->hasOne(direccion::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

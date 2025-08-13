@@ -77,7 +77,7 @@ Route::middleware(['auth','verified'])->post('cart/decreaseQty', [carritoControl
 //Formulario de compra y pago
 Route::middleware(['auth','verified'])->get('Formulario de compra', [carritoController::class, 'checkout_form'])->name('checkout_form');
 Route::middleware(['auth','verified'])->post('Agregar promo',[promocionesController::class, 'aplicarPromocion'])->name('promo_code');
-Route::middleware(['auth','verified'])->post('/procesar-pedido',[direccionController::class,'store'])->name('procesar');
+Route::middleware(['auth','verified'])->post('/Confirmar Pedido',[pedidosController::class,'store'])->name('pedidos.store');
 
 //Crud de administrador
 Route::middleware(['auth','verified', 'admin'])->group(function () {

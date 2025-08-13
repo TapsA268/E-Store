@@ -73,7 +73,7 @@
             </table>
             <a href="{{route('checkout_form')}}" class="btn btn-outline-light">Comprar</a>
         @else
-            <a href="{{route('home')}}">Agrega productos a tu carrito</a>
+            <a class="text-white" href="{{route('home')}}">Agrega productos a tu carrito</a>
         @endif
     </div>
 </div>
