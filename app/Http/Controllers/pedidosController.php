@@ -46,10 +46,30 @@ class pedidosController extends Controller
             Cart::destroy(); // Vaciar el carrito
             DB::commit();
 
-            return redirect()->route('cart.checkout', $pedido->id)->with('success', 'Pedido registrado correctamente.');
+            return redirect()->route('user.userOrder')->with('success', 'Pedido registrado correctamente.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Error al registrar el pedido: ' . $e->getMessage());
         }
+    }
+
+    public function showOrder()
+    {
+        $detalles = DB::table('pedido_producto')
+            ->join('productos', 'productos.id', '=', 'pedido_producto.producto_id')
+            ->join('pedidos', 'pedidos.id', '=', 'pedido_producto.pedido_id')
+            ->join('users', 'users.id', '=', 'pedidos.user_id')
+            ->select(
+                'pedido_producto.pedido_id',
+                'users.name as cliente',
+                'productos.nombre as producto',
+                'pedido_producto.cantidad',
+                'productos.precio'
+            )
+            ->orderBy('pedido_producto.pedido_id')
+            ->get();
+
+        $agrupado = $detalles->groupBy('pedido_id');
+        return view('user.userOrder', compact('agrupado'));
     }
 }

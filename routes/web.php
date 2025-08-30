@@ -79,6 +79,9 @@ Route::middleware(['auth','verified'])->get('Formulario de compra', [carritoCont
 Route::middleware(['auth','verified'])->post('Agregar promo',[promocionesController::class, 'aplicarPromocion'])->name('promo_code');
 Route::middleware(['auth','verified'])->post('/Confirmar Pedido',[pedidosController::class,'store'])->name('pedidos.store');
 
+//Vista de pedidos
+Route::middleware(['auth','verified'])->get('/Mis pedidos', [pedidosController::class, 'showOrder'])->name('user.userOrder');
+
 //Crud de administrador
 Route::middleware(['auth','verified', 'admin'])->group(function () {
     Route::get('/admin/Gestion_de_productos', [productosController::class, 'admin'])->name('admin.dashboard');
