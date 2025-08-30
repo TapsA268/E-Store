@@ -30,7 +30,7 @@ Una aplicación web desarrollada con Laravel que permite gestionar productos, us
 ## ⚙️ Instalación
 
 1. Clona el repositorio:
-   git clone https://github.com/tuUsuario/tuTiendaLaravel.git
+   
 
 2. Instala las dependencias:
     composer install
