@@ -121,76 +121,23 @@
                                 </li>
                             @endauth
                         @endif
-                    </ul>
-                    <ul class="mb-1">
-                        <form class="d-flex" role="search">
-                            <div class="input-group">
-                                <input class="form-control me-2" type="search" placeholder="Buscar"
-                                    aria-label="Buscar" id="input-buscar">
-                                <button class="btn btn-light" type="submit" disabled>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                        <path
-                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </form>
-                    </ul>
-                    <!-- Buscador -->
-                    <div class="content-search">
-                        <div class="content-table">
-                            <table id="tabla" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><a href="{{ url('/home') }}">Inicio</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_accesories') }}">Accesorios</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_smartphone') }}">Smarphones</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_camera') }}">Cámaras</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_laptop') }}">Laptops</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_headphone') }}">Audífonos</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_keyboard') }}">Teclados</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_speaker') }}">Altavoces</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_monitor') }}">Monitores</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_printer') }}">Impresoras</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="{{ route('products_smartTV') }}">SmartTV</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    </ul>                
                 </div>
             </div>
         </nav>
     </header>
 
     <main>
-        @yield('content')
+        <div class="d-flex">
+            @if (Route::has('login'))
+                @auth
+                    @include('layouts.partials.sidebar')
+                @endauth
+            @endif
+            <div class="flex-grow-1 p-4">
+                @yield('content')
+            </div>
+        </div>
     </main>
     <div class="container mt-5">
         <!-- Paginador -->
