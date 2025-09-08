@@ -64,6 +64,8 @@ Route::view('Sobre nosotros','about_us')->name('about_us');
 //Recompensas
 Route::view('Recompensas','rewards')->name('rewards');
 
+//Buscador
+Route::middleware(['auth','verified'])->get('Buscar', [productosController::class, 'Search'])->name('Buscar');
 
 //Carrito
 Route::middleware(['auth','verified'])->post('cart/add', [carritoController::class, 'add'])->name('add');

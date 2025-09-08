@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('status')->default('Confirmado');
             $table->timestamps();
         });
     }

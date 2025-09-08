@@ -64,42 +64,18 @@
                                     class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">{{ \Cart::count() }}
                                 </span>
                             </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                                </svg>
-                            </a>
-                            <!-- cerrar sesión -->
-                            <ul class="dropdown-menu text-small shadow">
-                                <li>
-                                    <p class="px-5">{{ Auth::user()->name }}</p>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col">
-                                            <a href="{{ url('/perfil/editar') }}"
-                                                class="btn btn-outline-warning">Editar perfil</a>
-                                        </div>
-                                        <div class="col">
-                                            <!-- Formulario donde la ruta logout realiza el cierre de sesión -->
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                                <!-- Token de seguridad -->
-                                                @csrf
-                                                <button class="btn btn-outline-danger" type="submit">
-                                                    Cerrar Sesion
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
+                <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                    <span class="badge bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+                            class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                        </svg>
+                    </span>
+                </a>
             </div>
         </nav>
     </header>

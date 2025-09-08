@@ -69,60 +69,34 @@
                                 <li><a href="{{ route('products_keyboard') }}" class="dropdown-item">Teclados</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('cart.checkout') }}" class="nav-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                                    <path
-                                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                                </svg>
-                                <span id="num_cart"
-                                    class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">{{ \Cart::count() }}</span>
-                            </a>
-                        </li>
                         <!-- si el usuario está autenticado, mostrará el icono para acceder al carrito y el icono para cerrar sesión -->
                         @if (Route::has('login'))
                             @auth
                                 <!-- icono de carrito -->
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                <li class="nav-item">
+                                    <a href="{{ route('cart.checkout') }}" class="nav-link">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                            fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
                                             <path
-                                                d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                                                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                                         </svg>
+                                        <span id="num_cart"
+                                            class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">{{ \Cart::count() }}</span>
                                     </a>
-                                    <!-- cerrar sesión -->
-                                    <ul class="dropdown-menu text-small shadow">
-                                        <li>
-                                            <p class="px-5">{{ Auth::user()->name }}</p>
-                                        </li>
-                                        <li>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <a href="{{ url('/perfil/editar') }}"
-                                                        class="btn btn-outline-warning">Editar perfil</a>
-                                                </div>
-                                                <div class="col">
-                                                    <!-- Formulario donde la ruta logout realiza el cierre de sesión -->
-                                                    <form id="logout-form" action="{{ route('logout') }}"
-                                                        method="POST">
-                                                        <!-- Token de seguridad -->
-                                                        @csrf
-                                                        <button class="btn btn-outline-danger" type="submit">
-                                                            Cerrar Sesion
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
                                 </li>
                             @endauth
                         @endif
-                    </ul>                
+                    </ul>
                 </div>
+                <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                    <span class="badge bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+                            class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                        </svg>
+                    </span>
+                </a>
             </div>
         </nav>
     </header>
@@ -131,7 +105,7 @@
         <div class="d-flex">
             @if (Route::has('login'))
                 @auth
-                    @include('layouts.partials.sidebar')
+                    @include('layouts.partials.sidebar', ['productos' => $productos])
                 @endauth
             @endif
             <div class="flex-grow-1 p-4">
